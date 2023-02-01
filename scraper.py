@@ -39,6 +39,9 @@ def extract_next_links(url, resp):
                 link = "/" + link
             link = urljoin(url, link)
 
+        if (bool(urlparse(link).fragment)):
+            link = link.split('#')[0]
+
         if (is_valid(link)):
             links.append(link)
 
