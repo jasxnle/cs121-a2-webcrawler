@@ -1,17 +1,17 @@
 import re
 from urllib.parse import urlparse
+from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
-    
+
 
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
-    # Implementation required.
     # url: the URL that was used to get the page
     # resp.url: the actual url of the page
     # resp.status: the status code returned by the server. 200 is OK, you got the page. Other numbers mean that there was some kind of problem.
@@ -22,24 +22,30 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
+    soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+    a_tags = soup.find_all("a.href")
 
+    links = []
+    for a in a_tags:
+        link = a.get("href")
+        link.append(urljoin(url, link))
 
     return list()
 
 def is_valid(url):
-    # Decide whether to crawl this url or not. 
+    # Decide whether to crawl this url or not.
     # If you decide to crawl it, return True; otherwise return False.
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
         if parsed.scheme not in set(["http", "https"]):
             return False
-        
+
         #check if url contains valid domain to visit
         if parsed.netloc.split('.', 1)[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
         # check if link is broken
-        #   
+        #
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"
