@@ -55,7 +55,8 @@ def is_valid(url):
             return False
 
         #check if url contains valid domain to visit
-        if parsed.netloc.split('.', 1)[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
+        new_domain = parsed.netloc.split('.', 1)
+        if len(new_domain) > 1 and new_domain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
         # check if link is broken
         #
