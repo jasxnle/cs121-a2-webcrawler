@@ -22,17 +22,23 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
+
     if resp.status != 200:
         return list()
-    
+
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     a_tags = soup.find_all("a")
 
     links = []
     for a in a_tags:
         link = a.get("href")
+
+        # if is relative link
         if (bool(urlparse(link).netloc) == False):
+            if (link[0] != "/"):
+                link = "/" + link
             link = urljoin(url, link)
+
         if (is_valid(link)):
             links.append(link)
 
