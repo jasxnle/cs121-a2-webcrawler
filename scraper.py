@@ -23,7 +23,7 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    if resp.status != 200:
+    if resp.status != 200 or resp.raw_response.content == None:
         return list()
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
