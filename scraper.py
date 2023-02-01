@@ -35,7 +35,7 @@ def extract_next_links(url, resp):
 
         # if is relative link
         if (bool(urlparse(link).netloc) == False):
-            if (link[0] != "/"):
+            if (link is not None and link[0] != "/"):
                 link = "/" + link
             link = urljoin(url, link)
 
