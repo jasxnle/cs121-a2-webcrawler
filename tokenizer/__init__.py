@@ -41,3 +41,38 @@ def mergeDictionary(d1, d2):
         if key in d1 and key in d2:
             d3[key] = value + d1[key]
     return d3
+
+def generateHashes(tokens):
+    res = {}
+    for token in tokens:
+        #res[token] = bin(int.from_bytes(hashlib.sha256(token.encode()).digest(), "little"))[-length:]
+        res[token] = hash(token)
+    return res
+
+def getFinalHash(freqs, hashes):
+    final_hash = [0]*64
+    for i in range(64):
+        for word, hash in hashes.items():
+            
+            if ((hash >> i) & 1) == 1:
+                final_hash[i] += freqs[word]
+            else:
+                final_hash[i] -= freqs[word]
+    
+    res = 0
+    for j in range(64):
+        if final_hash[j] > 0:
+            res += (2**j)
+    return res
+
+def checkSimilarity(hash1, hash2):
+    numBits = 64
+    numMatches = 0
+    for num in range(64):
+        if (((hash1 >> num) & 1) == ((hash2 >> num) & 1)):
+            numMatches += 1
+
+    print(numMatches/numBits)
+    if numMatches/numBits > 0.9:
+        return True
+    return False
