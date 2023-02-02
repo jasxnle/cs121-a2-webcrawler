@@ -2,7 +2,12 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
+from tokenizer import tokenize, computeWordFrequencies
 
+def tokenizeResponseContent(resp):
+    if resp.status != 200 or resp.raw_response.content == None:
+        return list()
+    
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
