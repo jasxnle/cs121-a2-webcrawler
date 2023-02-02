@@ -53,8 +53,8 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    #
-    if resp.status != 200 or resp.raw_response.content == None:
+    #checking if resp exists / is good to process
+    if resp.status != 200 or resp == None:
         return list()
 
     #FIXME
