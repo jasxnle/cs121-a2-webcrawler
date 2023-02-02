@@ -12,3 +12,4 @@ class Response(object):
                 None)
         except TypeError:
             self.raw_response = None
+
