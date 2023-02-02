@@ -34,3 +34,10 @@ def findCommonTokens(text1, text2):
 
     #return commonTok
     return commonTok
+
+def mergeDictionary(d1, d2):
+    d3 = {**d1, **d2}
+    for key, value in d3.items():
+        if key in d1 and key in d2:
+            d3[key] = value + d1[key]
+    return d3

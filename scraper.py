@@ -2,12 +2,37 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from tokenizer import tokenize, computeWordFrequencies
+from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
 
-def tokenizeResponseContent(resp):
+#
+def checkSubdomain(url, resp):
     if resp.status != 200 or resp.raw_response.content == None:
-        return list()
-    
+        return (False, None)
+
+    parsed = urlparse(url)
+    subdomain = parsed.netloc.split('.', 1)
+
+    if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
+        return (True, subdomain)
+
+    return (False, None)
+
+
+def getLengthOfResponseContent(resp):
+    if resp.status != 200 or resp.raw_response.content == None:
+        return 0
+
+    soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+    return len(tokenize(soup.get_text()))
+
+# Returns all the common words
+def tokenizeResponseContent(resp, words):
+    if resp.status != 200 or resp.raw_response.content == None:
+        return words
+
+    soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+    return mergeDictionary(computeWordFrequencies(tokenize(soup.get_text())), words)
+
 def scraper(url, resp):
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
@@ -36,7 +61,7 @@ def extract_next_links(url, resp):
     #Add to config file later
     if len(resp.raw_response.content) > 4 * 1e9:
         return list()
-    
+
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     a_tags = soup.find_all("a")
 
