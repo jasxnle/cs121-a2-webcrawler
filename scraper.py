@@ -3,15 +3,15 @@ from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 
-def scraper(url, resp):
-    links = extract_next_links(url, resp)
+def scraper(url, resp, config):
+    links = extract_next_links(url, resp, config)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
 
 
     return [link for link in links if is_valid(link)]
 
-def extract_next_links(url, resp):
+def extract_next_links(url, resp, config):
     # url: the URL that was used to get the page
     # resp.url: the actual url of the page
     # resp.status: the status code returned by the server. 200 is OK, you got the page. Other numbers mean that there was some kind of problem.
@@ -23,15 +23,14 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    #
+    # no links to extract if URL has no content or has bad return code
     if resp.status != 200 or resp.raw_response.content == None:
         return list()
 
-    #FIXME
-    #Add to config file later
-    if len(resp.raw_response.content) > 4 * 1e9:
+    # don't scrape content of file above threshold
+    if len(resp.raw_response.content) > config.max_file_size * 1e9:
         return list()
-    
+
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     a_tags = soup.find_all("a")
 
@@ -42,7 +41,8 @@ def extract_next_links(url, resp):
         #if link is empty
         if(not link):
             continue
-        # if is relative link
+
+        # if is relative link, fix faulty href paths
         if (bool(urlparse(link).netloc) == False):
             if (link is not None and link[0] != "/"):
                 link = "/" + link
