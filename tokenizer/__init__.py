@@ -1,4 +1,5 @@
 import re
+import hashlib
 from bs4 import BeautifulSoup       # FIXME: extract all soup references to worker.py
 # List<Token> tokenize(TextFile)
 
@@ -47,42 +48,42 @@ def mergeDictionary(d1, d2):
 def generateHashes(tokens):
     res = {}
     for token in tokens:
-        #res[token] = bin(int.from_bytes(hashlib.sha256(token.encode()).digest(), "little"))[-length:]
-        res[token] = hash(token)
+        hex_to_int = int(hashlib.md5(token.encode()).hexdigest(), 16)
+        res[token] = (bin(hex_to_int)[2:]).zfill(128)
     return res
 
 # freqs: result from computeWordFrequencies
 # hashes: result from generateHashes
 def getFinalHash(freqs, hashes):
-    final_hash = [0]*64
-    for i in range(64):
+    length = 128
+    final_hash = [0]*length
+    for i in range(length):
         for word, hash in hashes.items():
             
-            if ((hash >> i) & 1) == 1:
-                final_hash[64-i-1] += freqs[word]
+            if hash[i] == '1':
+                final_hash[i] += freqs[word]
             else:
-                final_hash[64-i-1] -= freqs[word]
+                final_hash[i] -= freqs[word]
     
-    
-    for j in range(64):
+    res = ['']*length
+    for j in range(length):
         if final_hash[j] > 0:
-            final_hash[j] = '1'
+            res[j] = '1'
         else:
-            final_hash[j] = '0'
+            res[j] = '0'
     
-    hash_str = ''.join(final_hash)
-    return int(hash_str, 2)
+    hash_str = ''.join(res)
+    return hash_str
 
 def compareHash(hash1, hash2):
     SIMILARITY_THRESHOLD = 0.9
-    numBits = 64
+    length = 128
     numMatches = 0
-    for num in range(64):
-        if ((((hash1 >> num) ^ (hash2 >> num))) == 0):
+    for num in range(length):
+        if (hash1[num] == hash2[num]):
             numMatches += 1
 
-    
-    if numMatches/numBits > SIMILARITY_THRESHOLD:
+    if numMatches/length > SIMILARITY_THRESHOLD:
         return True
     return False
 
@@ -99,7 +100,7 @@ def checkSimilarity(resp):
         with open(HASH_FILE_NAME, "a+") as f:
             for line in f.readlines():
                 # if line is not None and hashes similar, return True
-                if line is not None and compareHash(final_hash, int(line.strip())):
+                if line is not None and compareHash(final_hash, line.strip()):
                     return True
 
             # no similar hashes found, write hash to file
