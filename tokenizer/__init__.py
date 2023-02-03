@@ -1,12 +1,16 @@
 import re
 import hashlib
 from bs4 import BeautifulSoup       # FIXME: extract all soup references to worker.py
+from nltk.corpus import stopwords
 # List<Token> tokenize(TextFile)
 
 # This functions runs in O(nm) due to check each line in the file at a time
 # and then iterating through m words in the list
 def tokenize(text):
-    return re.findall(r"[a-zA-Z0-9]+", text)
+    tokens = re.findall(r"[a-zA-Z0-9]+", text.lower())
+    stop_words = set(stopwords.words('english'))
+    stop_words = [i.lower() for i in stop_words]
+    return [i.lower() for i in tokens if i.lower() not in stop_words]
     #exception handling
 
 
