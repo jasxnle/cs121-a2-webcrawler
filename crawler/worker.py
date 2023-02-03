@@ -36,7 +36,7 @@ class Worker(Thread):
             # TODO: Simhash: compare hashed resp of tbd_url to other hashes obtained
             #       from scraping. If similar to other hashes, do not scrape, download,
             #       or generate statistics.
-            if (checkSimilarity(resp)):
+            if (resp.status == 200 & resp is not None & checkSimilarity(resp)):
                 self.logger.info(f"URL {tbd_url} found to be duplicate")
                 continue
 
