@@ -1,6 +1,7 @@
 import re
 import hashlib
 from bs4 import BeautifulSoup       # FIXME: extract all soup references to worker.py
+import nltk
 from nltk.corpus import stopwords
 # List<Token> tokenize(TextFile)
 
