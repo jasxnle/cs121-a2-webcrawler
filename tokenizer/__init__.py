@@ -83,7 +83,7 @@ def compareHash(hash1, hash2):
         if ((((hash1 >> num) ^ (hash2 >> num))) == 0):
             numMatches += 1
 
-    print(numMatches/numBits)
+    
     if numMatches/numBits > SIMILARITY_THRESHOLD:
         return True
     return False
