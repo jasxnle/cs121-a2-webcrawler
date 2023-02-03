@@ -102,6 +102,10 @@ def is_valid(url):
         if len(new_domain) > 1 and new_domain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
 
+        # filter out any "mailto" links
+        if re.match(r".*(mailto).*", parsed.path):
+            return False
+
         # filter out problematic urls (calendar, swiki)
         if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
             return False
