@@ -69,7 +69,7 @@ def checkSimilarity(hash1, hash2):
     numBits = 64
     numMatches = 0
     for num in range(64):
-        if (((hash1 >> num) & 1) == ((hash2 >> num) & 1)):
+        if ((((hash1 >> num) ^ (hash2 >> num))) == 0):
             numMatches += 1
 
     print(numMatches/numBits)
