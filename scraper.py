@@ -13,7 +13,7 @@ def checkSubdomain(url, resp):
     subdomain = parsed.netloc.split('.', 1)
 
     if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
-        return (True, subdomain)
+        return (True, subdomain[0])
 
     return (False, None)
 
