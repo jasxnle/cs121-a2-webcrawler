@@ -6,7 +6,7 @@ from tokenizer import tokenize, computeWordFrequencies, mergeDictionary, generat
 
 #
 def checkSubdomain(url, resp):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return (False, None)
 
     parsed = urlparse(url)
