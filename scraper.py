@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
+from tokenizer import tokenize, computeWordFrequencies, mergeDictionary, generateHashes, getFinalHash, checkSimilarity
 
 #
 def checkSubdomain(url, resp):
@@ -10,10 +10,11 @@ def checkSubdomain(url, resp):
         return (False, None)
 
     parsed = urlparse(url)
+    #FIXME
     subdomain = parsed.netloc.split('.', 1)
 
     if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
-        return (True, subdomain)
+        return (True, subdomain[0])
 
     return (False, None)
 
@@ -34,10 +35,11 @@ def tokenizeResponseContent(resp, words):
     return mergeDictionary(computeWordFrequencies(tokenize(soup.get_text())), words)
 
 def scraper(url, resp):
+
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
-
+    
 
     return [link for link in links if is_valid(link)]
 
@@ -53,8 +55,8 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    #checking if resp exists / is good to process
-    if resp.status != 200 or resp == None:
+    #checking if response is 200, resp is null , content is null 
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
 
     #FIXME
