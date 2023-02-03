@@ -76,7 +76,7 @@ def getFinalHash(freqs, hashes):
     return hash_str
 
 def compareHash(hash1, hash2):
-    SIMILARITY_THRESHOLD = 0.8
+    SIMILARITY_THRESHOLD = 0.6
     length = 128
     numMatches = 0
     for num in range(length):
