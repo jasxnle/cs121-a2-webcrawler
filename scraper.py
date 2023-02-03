@@ -10,6 +10,7 @@ def checkSubdomain(url, resp):
         return (False, None)
 
     parsed = urlparse(url)
+    #FIXME
     subdomain = parsed.netloc.split('.', 1)
 
     if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
@@ -54,9 +55,8 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    #checking if resp exists / is good to process
-    #FIXME second condition
-    if resp.status != 200 or resp is None:
+    #checking if response is 200, resp is null , content is null 
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
 
     #FIXME
