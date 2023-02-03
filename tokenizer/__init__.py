@@ -54,16 +54,15 @@ def generateHashes(tokens):
 # freqs: result from computeWordFrequencies
 # hashes: result from generateHashes
 def getFinalHash(freqs, hashes):
-    # HASH_SIZE is 64 bits
     final_hash = [0]*64
     for i in range(64):
         for word, hash in hashes.items():
-
+            
             if ((hash >> i) & 1) == 1:
-                final_hash[i] += freqs[word]
+                final_hash[64-i-1] += freqs[word]
             else:
-                final_hash[i] -= freqs[word]
-
+                final_hash[64-i-1] -= freqs[word]
+    
     
     for j in range(64):
         if final_hash[j] > 0:
@@ -72,6 +71,7 @@ def getFinalHash(freqs, hashes):
             final_hash[j] = '0'
     
     hash_str = ''.join(final_hash)
+    print(hash_str)
     return int(hash_str, 2)
 
 def compareHash(hash1, hash2):
