@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
+from tokenizer import tokenize, computeWordFrequencies, mergeDictionary, generateHashes, getFinalHash, checkSimilarity
 
 #
 def checkSubdomain(url, resp):
@@ -34,10 +34,11 @@ def tokenizeResponseContent(resp, words):
     return mergeDictionary(computeWordFrequencies(tokenize(soup.get_text())), words)
 
 def scraper(url, resp):
+
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
-
+    
 
     return [link for link in links if is_valid(link)]
 
@@ -54,7 +55,8 @@ def extract_next_links(url, resp):
     # convert relative urls to absolute urls
 
     #checking if resp exists / is good to process
-    if resp.status != 200 or resp == None:
+    #FIXME second condition
+    if resp.status != 200 or resp.raw_response == None:
         return list()
 
     #FIXME
