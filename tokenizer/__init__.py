@@ -98,6 +98,7 @@ def checkSimilarity(resp):
         final_hash = getFinalHash(freqs, hashes)
 
         with open(HASH_FILE_NAME, "w+", buffering=1) as f:
+            f.seek(0, 0)
             for line in f.readlines():
                 # if line is not None and hashes similar, return True
                 if line is not None and compareHash(final_hash, line.strip()):
