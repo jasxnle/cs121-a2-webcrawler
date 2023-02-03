@@ -71,7 +71,6 @@ def getFinalHash(freqs, hashes):
             final_hash[j] = '0'
     
     hash_str = ''.join(final_hash)
-    print(hash_str)
     return int(hash_str, 2)
 
 def compareHash(hash1, hash2):
