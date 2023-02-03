@@ -37,6 +37,7 @@ class Worker(Thread):
             #       from scraping. If similar to other hashes, do not scrape, download,
             #       or generate statistics.
             if (checkSimilarity(resp)):
+                self.logger.info(f"URL {tbd_url} found to be duplicate")
                 continue
 
             scraped_urls = scraper.scraper(tbd_url, resp)
