@@ -62,13 +62,13 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
 
-        #sorting 50 most common words 
+        #sorting 50 most common words
         sortFreq = dict(sorted(self.frontier.words.items(), key=lambda item: (-item[1], item[0])))
-        commonWords = sortFreq.keys()
+        commonWords = {k: sortFreq[k] for k in list(sortFreq)[:50]}
         # Write statistics to file
         self.statistics_file = open(self.STATS_FILE_NAME, "w")
         self.statistics_file.write(f"Num Unique Pages: {self.frontier.uniquePages}\n")
         self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_URL}\n")
-        self.statistics_file.write(f"Top 50 Common Words: {commonWords[0:50]}\n")
+        self.statistics_file.write(f"Top 50 Common Words: {commonWords}\n")
         self.statistics_file.write(f"Subdomains: {self.frontier.subdomains}\n")
         self.statistics_file.close()
