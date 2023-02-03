@@ -59,11 +59,16 @@ def getFinalHash(freqs, hashes):
             else:
                 final_hash[i] -= freqs[word]
     
-    res = 0
+    
     for j in range(64):
         if final_hash[j] > 0:
-            res += (2**j)
-    return res
+            final_hash[j] = '1'
+        else:
+            final_hash[j] = '0'
+    
+    hash_str = ''.join(final_hash)
+    print(hash_str)
+    return int(hash_str, 2)
 
 def checkSimilarity(hash1, hash2):
     numBits = 64
