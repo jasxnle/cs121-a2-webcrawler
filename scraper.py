@@ -86,6 +86,7 @@ def extract_next_links(url, resp):
         if (bool(urlparse(link).fragment)):
             link = link.split('#')[0]
 
+        # FIXME: should be able to remove is_valid() check if use it in scraper()
         if (is_valid(link)):
             links.append(link)
 
@@ -101,11 +102,14 @@ def is_valid(url):
         if parsed.scheme not in set(["http", "https"]):
             return False
 
-        #check if url contains valid domain to visit
-        new_domain = parsed.netloc.split('.', 1)
-        if len(new_domain) > 1 and new_domain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
+        # check if url contains valid domain to visit
+        # FIXME: not correct lines
+        # subdomain = parsed.netloc.split('.')[:-3]
+        subdomain = parsed.netloc.split('.', 1)
+        if len(subdomain) > 1 and subdomain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
-        # check if link is broken
+
+        # TODO: check if link is broken
         #
 
         # check if link is valid extension

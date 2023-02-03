@@ -13,6 +13,7 @@ class Frontier(object):
         self.logger = get_logger("FRONTIER")
         self.config = config
         self.to_be_downloaded = list()
+        # FIXME: move statistics to worker
         self.uniquePages = 0
         self.words = {}
         self.longest_web_page = 0
