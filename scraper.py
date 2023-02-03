@@ -20,7 +20,7 @@ def checkSubdomain(url, resp):
 
 
 def getLengthOfResponseContent(resp):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return 0
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
@@ -28,14 +28,13 @@ def getLengthOfResponseContent(resp):
 
 # Returns all the common words
 def tokenizeResponseContent(resp, words):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return words
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     return mergeDictionary(computeWordFrequencies(tokenize(soup.get_text())), words)
 
 def scraper(url, resp):
-
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
