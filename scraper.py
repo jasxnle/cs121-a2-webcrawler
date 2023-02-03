@@ -53,31 +53,36 @@ def extract_next_links(url, resp):
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
 
-    #checking if resp exists / is good to process
+    # Max file size in GB
+    MAX_FILE_SIZE = 4
+
+    # checking if resp exists / is good to process
     if resp.status != 200 or resp == None:
         return list()
 
-    #FIXME
-    #Add to config file later
-    if len(resp.raw_response.content) > 4 * 1e9:
+    # Do not scrape if file is above size threshold
+    if len(resp.raw_response.content) > MAX_FILE_SIZE * 1e9:
         return list()
 
+    # Scrape page and get all links as strings
+    links = []
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     a_tags = soup.find_all("a")
-
-    links = []
     for a in a_tags:
         link = a.get("href")
 
-        #if link is empty
-        if(not link):
+        # if link is empty or is None
+        if (not link or link is None):
             continue
-        # if is relative link
+
+        # if is relative link, correct faulty relative links
+        # e.g. `href = "internal/path"` => `href = "/internal/path"`
         if (bool(urlparse(link).netloc) == False):
-            if (link is not None and link[0] != "/"):
+            if (link[0] != "/"):
                 link = "/" + link
             link = urljoin(url, link)
 
+        # filter out URLs with fragments
         if (bool(urlparse(link).fragment)):
             link = link.split('#')[0]
 
@@ -102,6 +107,8 @@ def is_valid(url):
             return False
         # check if link is broken
         #
+
+        # check if link is valid extension
         return not re.match(
             r".*\.(css|js|bmp|gif|jpe?g|ico"
             + r"|png|tiff?|mid|mp2|mp3|mp4"

@@ -43,7 +43,7 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
 
-        # Write statistics to file
+        # record stats after done crawling
         self.statistics_file = open("STATS_FILE.txt", "w")
         self.statistics_file.write(f"Num Unique Pages: {self.frontier.uniquePages}\n")
         self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_web_page}\n")
