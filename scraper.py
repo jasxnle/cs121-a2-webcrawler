@@ -2,7 +2,7 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from tokenizer import tokenize, computeWordFrequencies, mergeDictionary, generateHashes, getFinalHash, checkSimilarity
+from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
 
 #
 def checkSubdomain(url, resp):
