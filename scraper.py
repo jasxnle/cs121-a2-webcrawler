@@ -101,6 +101,11 @@ def is_valid(url):
         new_domain = parsed.netloc.split('.', 1)
         if len(new_domain) > 1 and new_domain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
+
+        # filter out problematic urls (calendar, swiki)
+        if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
+            return False
+
         # check if link is broken
         #
         return not re.match(
