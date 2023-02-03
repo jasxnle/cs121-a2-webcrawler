@@ -3,7 +3,6 @@ from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
-
 #
 def checkSubdomain(url, resp):
     if resp.status != 200 or resp.raw_response.content == None:
