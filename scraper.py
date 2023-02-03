@@ -56,7 +56,7 @@ def extract_next_links(url, resp):
 
     #checking if resp exists / is good to process
     #FIXME second condition
-    if resp.status != 200 or resp.raw_response == None:
+    if resp.status != 200 or resp is None:
         return list()
 
     #FIXME
