@@ -107,8 +107,8 @@ def is_valid(url):
             return False
 
         # filter out problematic urls (calendar, swiki)
-        if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
-            return False
+        # if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
+            # return False
 
         # check if link is broken
         #
