@@ -16,6 +16,7 @@ class Worker(Thread):
         self.frontier = frontier
         self.STATS_FILE_NAME = "STATS_FILE.txt"         # FIXME: choose different name per worker to make thread-safe
         self.statistics_file = None
+    
         # basic check for requests in scraper
         assert {getsource(scraper).find(req) for req in {"from requests import", "import requests"}} == {-1}, "Do not use requests in scraper.py"
         assert {getsource(scraper).find(req) for req in {"from urllib.request import", "import urllib.request"}} == {-1}, "Do not use urllib.request in scraper.py"
@@ -40,8 +41,15 @@ class Worker(Thread):
 
             scraped_urls = scraper.scraper(tbd_url, resp)
 
-            # Statistics for report
-            self.frontier.longest_web_page = max(self.frontier.longest_web_page, scraper.getLengthOfResponseContent(resp))
+            # STATISTICS FOR REPORT
+            # lenth of the url
+            length = scraper.getLengthOfResponseContent(resp)
+            # max()
+            if length > self.frontier.longest_web_page:
+                self.frontier.longest_URL = resp.url
+                self.frontier.longest_web_page = length
+
+            #finding common words
             self.frontier.words = scraper.tokenizeResponseContent(resp, self.frontier.words)
 
             is_subdomain, subdomain = scraper.checkSubdomain(tbd_url, resp)
@@ -53,10 +61,13 @@ class Worker(Thread):
             self.frontier.mark_url_complete(tbd_url)
             time.sleep(self.config.time_delay)
 
+        #sorting 50 most common words 
+        sortFreq = dict(sorted(self.frontier.words.items(), key=lambda item: (-item[1], item[0])))
+        commonWords = sortFreq.keys()
         # Write statistics to file
         self.statistics_file = open(self.STATS_FILE_NAME, "w")
         self.statistics_file.write(f"Num Unique Pages: {self.frontier.uniquePages}\n")
-        self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_web_page}\n")
-        self.statistics_file.write(f"Words: {self.frontier.words}\n")
+        self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_URL}\n")
+        self.statistics_file.write(f"Top 50 Common Words: {commonWords[0:50]}\n")
         self.statistics_file.write(f"Subdomains: {self.frontier.subdomains}\n")
         self.statistics_file.close()

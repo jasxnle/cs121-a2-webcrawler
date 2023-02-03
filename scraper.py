@@ -2,11 +2,11 @@ import re
 from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
-from tokenizer import tokenize, computeWordFrequencies, mergeDictionary, generateHashes, getFinalHash, compareHash
+from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
 
 #
 def checkSubdomain(url, resp):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return (False, None)
 
     parsed = urlparse(url)
