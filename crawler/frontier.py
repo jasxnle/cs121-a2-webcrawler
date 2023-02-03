@@ -17,6 +17,7 @@ class Frontier(object):
         self.words = {}
         self.longest_web_page = 0
         self.subdomains = defaultdict(int)
+        self.longest_URL = ""
 
         if not os.path.exists(self.config.save_file) and not restart:
             # Save file does not exist, but request to load save.
