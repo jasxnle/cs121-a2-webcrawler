@@ -99,7 +99,7 @@ def checkSimilarity(resp):
         with open(HASH_FILE_NAME, "a+") as f:
             for line in f.readlines():
                 # if line is not None and hashes similar, return True
-                if line is not None and compareHash(final_hash, line.strip()):
+                if line is not None and compareHash(final_hash, int(line.strip())):
                     return True
 
             # no similar hashes found, write hash to file
