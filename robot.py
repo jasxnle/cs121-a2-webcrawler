@@ -1,6 +1,4 @@
 import urllib.robotparser
-from bs4 import BeautifulSoup
-import urllib.request
 
 class RobotChecker:
     def __init__(self, url) -> None:
@@ -23,10 +21,6 @@ class RobotChecker:
             return True
         
         
-    def get_sitemap(self) -> BeautifulSoup:
-        try:
-            with urllib.request.urlopen(self.website_url + "/sitemap.xml") as response:
-                soup = BeautifulSoup(response, "html.parser")
-                return soup
-        except:
-            return None
+    def get_sitemap(self) -> list:
+        return self.robot_parser.site_maps()
+        
