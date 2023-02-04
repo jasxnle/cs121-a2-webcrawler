@@ -5,20 +5,22 @@ from bs4 import BeautifulSoup
 from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
 #
 def checkSubdomain(url, resp):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return (False, None)
 
     parsed = urlparse(url)
+    #FIXME
     subdomain = parsed.netloc.split('.', 1)
 
-    if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
-        return (True, subdomain)
+    # Report specified to find subdomains in the domain "ics.uci.edu" only
+    if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu"]):
+        return (True, parsed.netloc)
 
     return (False, None)
 
 
 def getLengthOfResponseContent(resp):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return 0
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
@@ -26,7 +28,7 @@ def getLengthOfResponseContent(resp):
 
 # Returns all the common words
 def tokenizeResponseContent(resp, words):
-    if resp.status != 200 or resp.raw_response.content == None:
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return words
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
@@ -55,8 +57,8 @@ def extract_next_links(url, resp):
     # Max file size in GB
     MAX_FILE_SIZE = 4
 
-    # checking if resp exists / is good to process
-    if resp.status != 200 or resp == None:
+    #checking if response is 200, resp is null , content is null
+    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
 
     # Do not scrape if file is above size threshold
@@ -108,6 +110,14 @@ def is_valid(url):
         if len(subdomain) > 1 and subdomain[1] not in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
             return False
 
+        # filter out any "mailto" links
+        if re.match(r".*(mailto).*", parsed.path):
+            return False
+
+        # filter out problematic urls (calendar, swiki)
+        if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
+            return False
+
         # TODO: check if link is broken
         #
 
@@ -120,6 +130,7 @@ def is_valid(url):
             + r"|data|dat|exe|bz2|tar|msi|bin|7z|psd|dmg|iso"
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
+            + r"|apk|war|img"
             + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
 
     except TypeError:
