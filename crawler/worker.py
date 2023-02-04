@@ -68,7 +68,14 @@ class Worker(Thread):
         # Write statistics to file
         self.statistics_file = open(self.STATS_FILE_NAME, "w")
         self.statistics_file.write(f"Num Unique Pages: {self.frontier.uniquePages}\n")
+        self.statistics_file.write("\n\n")
         self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_URL}\n")
-        self.statistics_file.write(f"Top 50 Common Words: {commonWords}\n")
-        self.statistics_file.write(f"Subdomains: {self.frontier.subdomains}\n")
+        self.statistics_file.write("\n\n")
+        self.statistics_file.write(f"Top 50 Common Words:\n")
+        for k, v in commonWords:
+            self.statistics_file.write(k + "=" + str(v) +"\n")
+        self.statistics_file.write("\n\n")
+        self.statistics_file.write(f"Subdomains:\n")
+        for k, v in self.frontier.subdomains:
+            self.statistics_file.write(k + "=" + str(v) +"\n")
         self.statistics_file.close()
