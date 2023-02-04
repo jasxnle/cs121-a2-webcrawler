@@ -5,6 +5,7 @@ from utils.download import download
 from utils import get_logger
 import scraper
 import time
+import robot
 
 from tokenizer import checkSimilarity
 
@@ -28,7 +29,12 @@ class Worker(Thread):
             if not tbd_url:
                 self.logger.info("Frontier is empty. Stopping Crawler.")
                 break
-            resp = download(tbd_url, self.config, self.logger)
+            rb = robot.RobotChecker(tbd_url)
+            if rb.is_allowed(self.config.user_agent):
+                resp = download(tbd_url, self.config, self.logger)
+            else:
+                continue
+
             self.logger.info(
                 f"Downloaded {tbd_url}, status <{resp.status}>, "
                 f"using cache {self.config.cache_server}.")
