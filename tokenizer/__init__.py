@@ -126,21 +126,27 @@ def getFinalHash(freqs, hashes):
     # TODO: document SimHash algo
     length = 128
     final_hash = [0]*length
+    # loop through each "bit" of final_hash list
     for i in range(length):
         for word, hash in hashes.items():
-
+            # if the bit at the specified position in hash is 1, add weight of token to final_hash[i]
             if hash[i] == '1':
                 final_hash[i] += freqs[word]
+            # else, subtract weight of token from final_hash[i]
             else:
                 final_hash[i] -= freqs[word]
 
+    # list to represent binary string
     res = ['']*length
     for j in range(length):
+        # if the jth component of final_hash is positive, set jth bit of res binary string to 1
         if final_hash[j] > 0:
             res[j] = '1'
+        # else, set jth bit to 0
         else:
             res[j] = '0'
 
+    # join list into binary string
     hash_str = ''.join(res)
     return hash_str
 
@@ -158,11 +164,15 @@ def compareHash(hash1, hash2):
 
     # TODO: document SimHash algo
     length = 128
+    # the number of matches between bits in the two hashes
     numMatches = 0
     for num in range(length):
+        # if the bit at hash1 is equal to the bit at hash2, that is a match, add to numMatches
         if (hash1[num] == hash2[num]):
             numMatches += 1
 
+    # if the number of matches divided by the total number of bits is
+    #  greater than similarity threshold, hashes considered similar
     if numMatches/length > SIMILARITY_THRESHOLD:
         return True
     return False
