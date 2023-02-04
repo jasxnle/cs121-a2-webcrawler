@@ -13,8 +13,9 @@ def checkSubdomain(url, resp):
     #FIXME
     subdomain = parsed.netloc.split('.', 1)
 
-    if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu", "cs.uci.edu", "informatics.uci.edu", "stat.uci.edu"]):
-        return (True, subdomain[0])
+    # Report specified to find subdomains in the domain "ics.uci.edu" only
+    if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu"]):
+        return (True, parsed.netloc)
 
     return (False, None)
 
