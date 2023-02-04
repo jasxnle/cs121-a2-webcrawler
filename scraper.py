@@ -3,13 +3,23 @@ from urllib.parse import urlparse
 from urllib.parse import urljoin
 from bs4 import BeautifulSoup
 from tokenizer import tokenize, computeWordFrequencies, mergeDictionary
-#
 def checkSubdomain(url, resp):
+    """This function checks if a url has a valid subdomain
+
+    Args:
+        url : Url that we want to check if it has a sub domain
+        resp : response object containing status code and page content
+
+    Returns:
+        tuple : (True or False if a subdomain is present, full url with subdomain)
+    """
+    
+
+    #checking is resp is a a valid link to parse
     if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return (False, None)
 
     parsed = urlparse(url)
-    #FIXME
     subdomain = parsed.netloc.split('.', 1)
 
     # Report specified to find subdomains in the domain "ics.uci.edu" only
@@ -20,6 +30,15 @@ def checkSubdomain(url, resp):
 
 
 def getLengthOfResponseContent(resp):
+    """This function finds the largest web page crawled
+
+    Args:
+        resp : response object that contains stauts code and content of a url
+
+    Returns:
+        int : returns length for the response content
+    """
+    #checking is resp is a valid link to parse
     if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return 0
 
@@ -28,6 +47,17 @@ def getLengthOfResponseContent(resp):
 
 # Returns all the common words
 def tokenizeResponseContent(resp, words):
+    """this function is tokenizes the content of a webpage
+
+    Args:
+        resp : response object that contains stauts code and content of a url
+        words : dictionary of current common words
+
+    Returns:
+        dictionary : merged diction of common words 
+    """
+
+    #checking if resp is a valid link to parse
     if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return words
 
@@ -35,6 +65,15 @@ def tokenizeResponseContent(resp, words):
     return mergeDictionary(computeWordFrequencies(tokenize(soup.get_text())), words)
 
 def scraper(url, resp):
+    """This function is used to scrape the webpage
+
+    Args:
+        url : Url that we want to check if it has a sub domain
+        resp : response object containing status code and page content
+
+    Returns:
+        list : next links to crawl that are valid
+    """
     links = extract_next_links(url, resp)
     # use starting url and response to grab next links and data
     # create structure to store all links to visit
@@ -43,6 +82,15 @@ def scraper(url, resp):
     return [link for link in links if is_valid(link)]
 
 def extract_next_links(url, resp):
+    """Getting next links from a url
+
+    Args:
+        url : Url that we want to check if it has a sub domain
+        resp : response object containing status code and page content
+
+    Returns:
+        list : next links to crawl
+    """
     # url: the URL that was used to get the page
     # resp.url: the actual url of the page
     # resp.status: the status code returned by the server. 200 is OK, you got the page. Other numbers mean that there was some kind of problem.
@@ -87,19 +135,24 @@ def extract_next_links(url, resp):
         if (bool(urlparse(link).fragment)):
             link = link.split('#')[0]
 
-        # FIXME: should be able to remove is_valid() check if use it in scraper()
-        if (is_valid(link)):
-            links.append(link)
-
-
     return links
 
 def is_valid(url):
+    """checks is a url is a valid url to crawl
+
+    Args:
+        url : url that we are currently trying to crawl
+
+    Returns:
+        boolean : true if need to crawl, false not to crawl
+    """
     # Decide whether to crawl this url or not.
     # If you decide to crawl it, return True; otherwise return False.
     # There are already some conditions that return False.
     try:
         parsed = urlparse(url)
+
+        #checking if scheme is valid 
         if parsed.scheme not in set(["http", "https"]):
             return False
 
@@ -117,9 +170,6 @@ def is_valid(url):
         # filter out problematic urls (calendar, swiki)
         if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
             return False
-
-        # TODO: check if link is broken
-        #
 
         # check if link is valid extension
         return not re.match(
