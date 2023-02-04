@@ -71,6 +71,12 @@ def extract_next_links(url, resp):
         return list()
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+
+    tokens = computeWordFrequencies(tokenize(soup.get_text()))
+    numTokens = sum([v for _, v in tokens.items()])
+    if numTokens < 50:
+        return links
+
     a_tags = soup.find_all("a")
 
     
@@ -118,6 +124,11 @@ def is_valid(url):
         if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
             return False
         '''
+        if re.search(r"/(pdf|wp-json)/", parsed.path.lower()):
+            return False
+        
+        if re.search(r"share=", parsed.query.lower()):
+            return False
         # check if link is broken
         #
         return not re.match(
@@ -129,7 +140,7 @@ def is_valid(url):
             + r"|epub|dll|cnf|tgz|sha1"
             + r"|thmx|mso|arff|rtf|jar|csv"
             + r"|apk|war|img"
-            + r"|rm|smil|wmv|swf|wma|zip|rar|gz)$", parsed.path.lower())
+            + r"|rm|smil|wmv|swf|wma|zip|rar|gz|ppsx)$", parsed.path.lower())
 
     except TypeError:
         print ("TypeError for ", parsed)
