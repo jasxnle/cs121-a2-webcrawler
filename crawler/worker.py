@@ -38,6 +38,7 @@ class Worker(Thread):
             #       or generate statistics.
             if (resp.status == 200 and resp is not None and checkSimilarity(resp)):
                 self.logger.info(f"URL {tbd_url} found to be duplicate")
+                time.sleep(self.config.time_delay)
                 continue
 
             scraped_urls = scraper.scraper(tbd_url, resp)
