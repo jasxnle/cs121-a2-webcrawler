@@ -18,7 +18,7 @@ class RobotChecker:
             except:
                 return False
         else:
-            return False
+            return True
         
         
     def get_sitemap(self) -> list:
