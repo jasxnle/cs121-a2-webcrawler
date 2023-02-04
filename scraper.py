@@ -54,10 +54,16 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
-
+    links = []
     #checking if response is 200, resp is null , content is null
-    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
+    if resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
+    
+    if url is not resp.url and is_valid(resp.url):
+        links.append(resp.url)
+
+    if resp.status != 200:
+        return links
 
     #FIXME
     #Add to config file later
@@ -67,7 +73,7 @@ def extract_next_links(url, resp):
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
     a_tags = soup.find_all("a")
 
-    links = []
+    
     for a in a_tags:
         link = a.get("href")
 
