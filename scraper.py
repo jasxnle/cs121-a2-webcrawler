@@ -104,7 +104,11 @@ def is_valid(url):
             return False
 
         # filter out any "mailto" links
-        if re.match(r".*(mailto).*", parsed.path):
+        if re.match(r"/(mailto):.*", parsed.path):
+            return False
+
+        # filter out embedded javascript code
+        if re.match(r"/javascript:.*", parsed.path):
             return False
 
         # filter out problematic urls (calendar, swiki)
