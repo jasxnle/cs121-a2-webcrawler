@@ -58,11 +58,10 @@ def extract_next_links(url, resp):
     #checking if response is 200, resp is null , content is null
     if resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
-    
-    if url is not resp.url and is_valid(resp.url):
-        links.append(resp.url)
 
     if resp.status != 200:
+        if resp.status > 299 and resp.status < 400 and url != resp.url and is_valid(resp.url):
+            links.append(resp.url)
         return links
 
     #FIXME
