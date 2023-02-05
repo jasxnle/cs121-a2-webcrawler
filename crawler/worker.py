@@ -16,7 +16,7 @@ class Worker(Thread):
         self.frontier = frontier
         self.STATS_FILE_NAME = "STATS_FILE.txt"         # FIXME: choose different name per worker to make thread-safe
         self.statistics_file = None
-    
+
         # basic check for requests in scraper
         assert {getsource(scraper).find(req) for req in {"from requests import", "import requests"}} == {-1}, "Do not use requests in scraper.py"
         assert {getsource(scraper).find(req) for req in {"from urllib.request import", "import urllib.request"}} == {-1}, "Do not use urllib.request in scraper.py"
@@ -72,7 +72,7 @@ class Worker(Thread):
         self.statistics_file.write(f"Longest Web Page: {self.frontier.longest_URL}\n")
         self.statistics_file.write("\n\n")
         self.statistics_file.write(f"Top 50 Common Words:\n")
-        for k, v in commonWords:
+        for k, v in commonWords.items():
             self.statistics_file.write(k + "=" + str(v) +"\n")
         self.statistics_file.write("\n\n")
         self.statistics_file.write(f"Subdomains:\n")
