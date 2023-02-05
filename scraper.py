@@ -15,7 +15,7 @@ def checkSubdomain(url, resp):
 
     # Report specified to find subdomains in the domain "ics.uci.edu" only
     if len(subdomain) > 1 and subdomain[1] in set(["ics.uci.edu"]):
-        return (True, parsed.netloc)
+        return (True, parsed)
 
     return (False, None)
 
