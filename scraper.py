@@ -69,7 +69,7 @@ def extract_next_links(url, resp):
 
     links = []
     for a in a_tags:
-        link = a.get("href")
+        link = a.get("href").strip()
 
         #if link is empty
         if(not link):
