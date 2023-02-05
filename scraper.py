@@ -69,11 +69,14 @@ def extract_next_links(url, resp):
 
     links = []
     for a in a_tags:
-        link = a.get("href").strip()
+        link = a.get("href")
 
         #if link is empty
         if(not link):
             continue
+
+        link = link.strip()
+
         # if is relative link
         if (bool(urlparse(link).netloc) == False):
             if (link is not None and link[0] != "/"):
