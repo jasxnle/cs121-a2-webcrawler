@@ -118,6 +118,15 @@ def is_valid(url):
         if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
             return False
 
+        if re.search(r"/(pdf|wp-json)/", parsed.path.lower()):
+            return False
+
+        if re.search(r"share=", parsed.query.lower()):
+            return False
+
+        if re.search(r".*\=pdf", parsed.query.lower()):
+            return False
+
         # check if link is broken
         #
         return not re.match(
