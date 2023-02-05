@@ -61,7 +61,18 @@ def extract_next_links(url, resp):
 
     if resp.status != 200:
         if resp.status > 299 and resp.status < 400 and url != resp.url and is_valid(resp.url):
-            links.append(resp.url)
+            newLink = resp.url
+            if (bool(urlparse(newLink).netloc) == False):
+                if (newLink is not None and newLink[0] != "/"):
+                    newLink = "/" + newLink
+                newLink = urljoin(url, newLink)
+
+            if (bool(urlparse(newLink).fragment)):
+                newLink = newLink.split('#')[0]
+
+            if (is_valid(newLink)):
+                links.append(newLink)
+            
         return links
 
     #FIXME
