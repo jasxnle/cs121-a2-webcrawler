@@ -81,6 +81,10 @@ def extract_next_links(url, resp):
         if (bool(urlparse(link).netloc) == False):
             if (link is not None and link[0] != "/"):
                 link = "/" + link
+            # FIXME: url = "https://www.ics.uci.edu/~vazirani", link = "/WNT Algorytmy aproksymacyjne.htm"
+            #        link = "https://www.ics.uci.edu/WNT Algorytmy aproksymacyjne.htm"
+            #        Possibly just append?
+            # FIXME: urljoin does not handle "~" well because it is not in the URL standard
             link = urljoin(url, link)
 
         if (bool(urlparse(link).fragment)):
