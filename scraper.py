@@ -54,10 +54,26 @@ def extract_next_links(url, resp):
     # Return a list with the hyperlinks (as strings) scrapped from resp.raw_response.content
     # check for href attributes within response, can check if link should be crawled (is_valid)
     # convert relative urls to absolute urls
-
+    links = []
     #checking if response is 200, resp is null , content is null
-    if resp.status != 200 or resp is None or resp.raw_response is None or resp.raw_response.content is None :
+    if resp is None or resp.raw_response is None or resp.raw_response.content is None :
         return list()
+
+    if resp.status != 200:
+        if resp.status > 299 and resp.status < 400 and url != resp.url and is_valid(resp.url):
+            newLink = resp.url
+            if (bool(urlparse(newLink).netloc) == False):
+                if (newLink is not None and newLink[0] != "/"):
+                    newLink = "/" + newLink
+                newLink = urljoin(url, newLink)
+
+            if (bool(urlparse(newLink).fragment)):
+                newLink = newLink.split('#')[0]
+
+            if (is_valid(newLink)):
+                links.append(newLink)
+
+        return links
 
     #FIXME
     #Add to config file later
@@ -65,9 +81,15 @@ def extract_next_links(url, resp):
         return list()
 
     soup = BeautifulSoup(resp.raw_response.content, "html.parser")
+
+    tokens = computeWordFrequencies(tokenize(soup.get_text()))
+    numTokens = sum([v for _, v in tokens.items()])
+    if numTokens < 50:
+        return links
+
     a_tags = soup.find_all("a")
 
-    links = []
+
     for a in a_tags:
         link = a.get("href")
 
@@ -118,9 +140,9 @@ def is_valid(url):
         if re.match(r"/javascript:.*", parsed.path):
             return False
 
-        # filter out problematic urls (calendar, swiki)
-        if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
-            return False
+        # # filter out problematic urls (calendar, swiki)
+        # if re.match(r".*(calendar|swiki|wiki).*", parsed.hostname):
+        #     return False
 
         if re.search(r"/(pdf|wp-json)/", parsed.path.lower()):
             return False
