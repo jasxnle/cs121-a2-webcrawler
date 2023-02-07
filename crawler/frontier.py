@@ -3,6 +3,7 @@ import shelve
 
 from threading import Thread, RLock
 from queue import Queue, Empty
+from collections import defaultdict
 
 from utils import get_logger, get_urlhash, normalize
 from scraper import is_valid
@@ -12,7 +13,12 @@ class Frontier(object):
         self.logger = get_logger("FRONTIER")
         self.config = config
         self.to_be_downloaded = list()
-        
+        self.uniquePages = 0
+        self.words = {}
+        self.longest_web_page = 0
+        self.subdomains = defaultdict(int)
+        self.longest_URL = ""
+
         if not os.path.exists(self.config.save_file) and not restart:
             # Save file does not exist, but request to load save.
             self.logger.info(
@@ -49,6 +55,7 @@ class Frontier(object):
 
     def get_tbd_url(self):
         try:
+            self.uniquePages += 1
             return self.to_be_downloaded.pop()
         except IndexError:
             return None
@@ -60,7 +67,7 @@ class Frontier(object):
             self.save[urlhash] = (url, False)
             self.save.sync()
             self.to_be_downloaded.append(url)
-    
+
     def mark_url_complete(self, url):
         urlhash = get_urlhash(url)
         if urlhash not in self.save:
