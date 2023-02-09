@@ -63,7 +63,7 @@ def extract_next_links(url, resp):
         if resp.status > 299 and resp.status < 400 and url != resp.url and is_valid(resp.url):
             newLink = resp.url
             if (bool(urlparse(newLink).netloc) == False):
-                if (newLink is not None and newLink[0] != "/"):
+                if (newLink is not None and newLink != "" and newLink[0] != "/"):
                     newLink = "/" + newLink
                 newLink = urljoin(url, newLink)
 
@@ -101,7 +101,7 @@ def extract_next_links(url, resp):
 
         # if is relative link
         if (bool(urlparse(link).netloc) == False):
-            if (link is not None and link[0] != "/"):
+            if (link is not None and link != "" and link[0] != "/"):
                 link = "/" + link
             # FIXME: url = "https://www.ics.uci.edu/~vazirani", link = "/WNT Algorytmy aproksymacyjne.htm"
             #        link = "https://www.ics.uci.edu/WNT Algorytmy aproksymacyjne.htm"

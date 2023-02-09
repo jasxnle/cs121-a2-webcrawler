@@ -77,6 +77,6 @@ class Worker(Thread):
             self.statistics_file.write(k + "=" + str(v) +"\n")
         self.statistics_file.write("\n\n")
         self.statistics_file.write(f"Subdomains:\n")
-        for k, v in dict(sorted(self.frontier.subdomains.items(), key=lambda item: (item[0], item[1]))):
-            self.statistics_file.write(k + ", " + str(v) +"\n")
+        for k, v in sorted(self.frontier.subdomains.items(), key=lambda item: (item[0], item[1])):
+            self.statistics_file.write(str(k) + ", " + str(v) +"\n")
         self.statistics_file.close()

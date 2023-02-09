@@ -62,19 +62,19 @@ def getFinalHash(freqs, hashes):
     final_hash = [0]*length
     for i in range(length):
         for word, hash in hashes.items():
-            
+
             if hash[i] == '1':
                 final_hash[i] += freqs[word]
             else:
                 final_hash[i] -= freqs[word]
-    
+
     res = ['']*length
     for j in range(length):
         if final_hash[j] > 0:
             res[j] = '1'
         else:
             res[j] = '0'
-    
+
     hash_str = ''.join(res)
     return hash_str
 
@@ -93,7 +93,7 @@ def compareHash(hash1, hash2):
 def checkSimilarity(resp):
     HASH_FILE_NAME = "HASH_FILE.txt"         # FIXME: choose different name per worker to make thread-safe
     # FIXME: what to return when resp is empty
-    if resp is not None and resp.raw_response is not None and resp.raw_response.content is not None:
+    if resp is not None and resp.raw_response is not None and resp.raw_response.content is not None and resp.raw_response.content != "":
         soup = BeautifulSoup(resp.raw_response.content, "html.parser")
         tokens = tokenize(soup.get_text())
         freqs = computeWordFrequencies(tokens)
@@ -106,7 +106,9 @@ def checkSimilarity(resp):
                 # if line is not None and hashes similar, return True
                 if line is not None and compareHash(final_hash, line.strip()):
                     return True
-            
+
             # no similar hashes found, write hash to file
             f.write(f"{final_hash}\n")
             return False
+    # return True in the case the response is not valid so the response isn't processed
+    return True
