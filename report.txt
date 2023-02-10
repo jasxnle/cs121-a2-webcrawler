@@ -1,0 +1,141 @@
+Num Unique Pages: 12362
+
+
+Longest Web Page: http://www.ics.uci.edu/~kay/wordlist.txt
+
+
+Top 50 Common Words:
+research=11589
+uci=11058
+computer=10464
+data=9041
+will=8608
+ics=8113
+information=7401
+2022=7198
+students=7137
+science=7056
+can=6417
+news=6146
+time=5446
+school=5245
+software=5132
+events=4888
+2021=4837
+systems=4620
+bren=4368
+new=4357
+computing=4105
+one=3963
+learning=3958
+people=3943
+university=3863
+irvine=3839
+contact=3831
+student=3755
+2020=3700
+first=3675
+current=3673
+graduate=3654
+design=3590
+faculty=3565
+may=3508
+use=3484
+page=3462
+also=3375
+ramesh=3345
+work=3337
+markellekelly=3331
+pdf=3329
+policies=3291
+project=3263
+edu=3211
+using=3199
+2018=3162
+projects=3140
+2016=3123
+conference=3105
+
+
+Subdomains:
+accessibility.ics.uci.edu, 4
+acoi.ics.uci.edu, 50
+aiclub.ics.uci.edu, 1
+archive.ics.uci.edu, 5
+asterix.ics.uci.edu, 5
+cbcl.ics.uci.edu, 46
+cert.ics.uci.edu, 14
+checkin.ics.uci.edu, 1
+chenli.ics.uci.edu, 8
+cml.ics.uci.edu, 62
+code.ics.uci.edu, 7
+computableplant.ics.uci.edu, 34
+containers.ics.uci.edu, 1
+create.ics.uci.edu, 7
+cwicsocal18.ics.uci.edu, 9
+cyberclub.ics.uci.edu, 15
+dgillen.ics.uci.edu, 19
+duttgroup.ics.uci.edu, 34
+elms.ics.uci.edu, 1
+emj.ics.uci.edu, 16
+esl.ics.uci.edu, 5
+evoke.ics.uci.edu, 4
+flamingo.ics.uci.edu, 7
+fr.ics.uci.edu, 3
+futurehealth.ics.uci.edu, 83
+gitlab.ics.uci.edu, 1
+graphics.ics.uci.edu, 7
+graphmod.ics.uci.edu, 1
+hack.ics.uci.edu, 1
+hai.ics.uci.edu, 5
+helpdesk.ics.uci.edu, 1
+hobbes.ics.uci.edu, 8
+hpi.ics.uci.edu, 3
+hub.ics.uci.edu, 1
+i-sensorium.ics.uci.edu, 5
+iasl.ics.uci.edu, 15
+ieee.ics.uci.edu, 1
+industryshowcase.ics.uci.edu, 11
+intranet.ics.uci.edu, 3
+ipubmed.ics.uci.edu, 1
+isg.ics.uci.edu, 88
+jgarcia.ics.uci.edu, 17
+keys.ics.uci.edu, 1
+luci.ics.uci.edu, 4
+mcs.ics.uci.edu, 33
+mdogucu.ics.uci.edu, 6
+mds.ics.uci.edu, 14
+mhcid.ics.uci.edu, 14
+motifmap-rna.ics.uci.edu, 2
+motifmap.ics.uci.edu, 2
+mswe.ics.uci.edu, 9
+mt-live.ics.uci.edu, 1
+nalini.ics.uci.edu, 5
+onboarding.ics.uci.edu, 1
+pastebin.ics.uci.edu, 1
+pgadmin.ics.uci.edu, 1
+phpmyadmin.ics.uci.edu, 3
+plrg.ics.uci.edu, 81
+psearch.ics.uci.edu, 1
+radicle.ics.uci.edu, 4
+redmiles.ics.uci.edu, 4
+riscit.ics.uci.edu, 2
+sdcl.ics.uci.edu, 69
+seal.ics.uci.edu, 5
+sherlock.ics.uci.edu, 6
+speedtest.ics.uci.edu, 1
+stairs.ics.uci.edu, 4
+statconsulting.ics.uci.edu, 4
+studentcouncil.ics.uci.edu, 16
+support.ics.uci.edu, 2
+tad.ics.uci.edu, 1
+tastier.ics.uci.edu, 1
+tippersweb.ics.uci.edu, 2
+transformativeplay.ics.uci.edu, 46
+tutors.ics.uci.edu, 1
+ugradforms.ics.uci.edu, 1
+unite.ics.uci.edu, 7
+wearablegames.ics.uci.edu, 5
+wics.ics.uci.edu, 77
+www-db.ics.uci.edu, 11
+xtune.ics.uci.edu, 6
